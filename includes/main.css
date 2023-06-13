@@ -115,11 +115,13 @@ a, button, input, select {
 }
 
 @media only screen and (max-width: 800px) {
-  body {
-    font-size: 10px !important;
-  }
-#info {
-border-bottom-right-radius: 0px;
-text-align: center;
-}
+	body {
+		font-size: 10px !important;
+	}
+	#info {
+		border-bottom-right-radius: 0px;
+		text-align: center;
+		width: 100%;
+		font-size: 15px !important;
+	}
 }
