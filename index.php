@@ -1,13 +1,12 @@
 <?php
-if (isset($_GET['cid']) && isset($_GET['pid'])) { // URL parameter exists
+if (isset($_GET['cid']) && isset($_GET['pid'])) { // URL parameters exists
 
 $folder = "./360s/c".$_GET['cid']."/p".$_GET['pid']."/";
 
 if(file_exists($folder)) { // folder exists
 
-$info_json = file_get_contents($folder.'info.json');
+$info_json = file_get_contents($folder.'info.json'); // Read the info from the info.json file
 $decoded_json = json_decode($info_json, false);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,24 +19,17 @@ $decoded_json = json_decode($info_json, false);
 	</head>
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<body id="bod">
-
 		<div id="info">
-			<h3><a href="<?php echo $decoded_json->estateAlink; ?>" target="_blank"><?php echo $decoded_json->estateA; ?></a></h3>
-			<h2><?php echo $decoded_json->title; ?></h2>
-			<span id="room">Area: </span> 
+			<h3><a href="<?php echo $decoded_json->estateAlink; ?>" target="_blank"><?php echo $decoded_json->estateA; ?></a></h3> <!-- Display the data from the info.json file -->
+			<h2><?php echo $decoded_json->title; ?></h2> 
+			<span id="area">Area: </span> 
 			<?php
-				$fileList = glob($folder.'*.jpg');
+				$fileList = glob($folder.'*.jpg'); // Search the folder for .jpg files
 				$firstFile = pathinfo($fileList[0])['filename'];
-				echo '<select onchange="roomChange()" id="select_room">';
-				foreach($fileList as $filename){
+				echo '<select onchange="areaChange()" id="select_area">';
+				foreach($fileList as $filename){ // Add each photo as an option in a drop down list
 					if(is_file($filename)){
-						//echo $filename, '<br>'; 
 						$path_parts = pathinfo($filename);
-						//echo $path_parts['filename'], "\n";
-						$url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']. '&a='.$path_parts['filename'].'">'.$path_parts['filename'];
-						$my_new_string = strstr($url, '&a=', true);
-						//echo $my_new_string;
-						//echo '<span>&#8226;</span> <a href="'.$my_new_string.'&r='.$path_parts['filename'].'">'.$path_parts['filename'].'</a> ';
 						if($_GET['a'] == $path_parts['filename']){
 						?>
 							<option value="<?php echo $path_parts['filename']; ?>" selected><?php echo $path_parts['filename']; ?></option>
@@ -47,24 +39,19 @@ $decoded_json = json_decode($info_json, false);
 							<option value="<?php echo $path_parts['filename']; ?>"><?php echo $path_parts['filename']; ?></option>
 						<?php
 						}
-						//echo '<span>&#8226;</span> <a href="'.$my_new_string.'&r='.$path_parts['filename'].'">'.$path_parts['filename'].'</a> ';
 					}   
 				}
 				echo "</select>";
-				//echo "<br>";
 			?>
-			<!--<a href="?r=lounge">Lounge</a> - <a href="?r=bed2">Bedroom 2</a> <br>-->
 			<button onclick="togRota()">Toggle Rotation</button><button onclick="openFullscreen();">Open In Fullscreen</button>
 			<br>
 			Drag to move around
 		</div>
 		
 		<div id="container"></div>
-
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
 		<!--<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
-
 		<script type="importmap">
 			{
 				"imports": {
@@ -73,30 +60,24 @@ $decoded_json = json_decode($info_json, false);
 				}
 			}
 		</script>
-
 		<script>
 			let rotate = true;
 			function togRota() {
   				rotate = !rotate;
-				console.log("ss")
 			}
 			
 			const queryString = window.location.search;
-			//console.log(queryString);
 			const urlParams = new URLSearchParams(queryString);
-			let room = urlParams.get('a')
-			//console.log(room);
-			if(room === null){
-				room = "<?php echo $firstFile; ?>"
+			let area = urlParams.get('a')
+			if(area === null){
+				area = "<?php echo $firstFile; ?>"
 			}
-			//document.getElementById("room").innerHTML = "Area: " + room;
-			function roomChange(){
-				d = document.getElementById("select_room").value;
+			
+			function areaChange(){
+				d = document.getElementById("select_area").value;
 				let thisPage = new URL(window.location.href);
 				thisPage.searchParams.set('a', d);
-				console.log(thisPage);
 				window.location.href = thisPage;
-				//location.reload();
 			}
 			
 			var elem = document.getElementById("bod");
@@ -142,7 +123,7 @@ $decoded_json = json_decode($info_json, false);
 				// invert the geometry on the x-axis so that all of the faces point inward
 				geometry.scale( - 1, 1, 1 );
 
-				const texture = new THREE.TextureLoader().load( '<?php echo $folder ?>'+ room + '.jpg' );
+				const texture = new THREE.TextureLoader().load( '<?php echo $folder ?>'+ area + '.jpg' );
 				texture.colorSpace = THREE.SRGBColorSpace;
 				const material = new THREE.MeshBasicMaterial( { map: texture } );
 
