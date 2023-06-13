@@ -1,16 +1,13 @@
 <?php
-if (isset($_GET['cid']) && isset($_GET['pid'])) {
-  // URL parameter exists
-  //echo 'URL parameter exists';
+if (isset($_GET['cid']) && isset($_GET['pid'])) { // URL parameter exists
 
 $folder = "./360s/c".$_GET['cid']."/p".$_GET['pid']."/";
-//echo $folder;
 
-if(file_exists($folder)) {
+if(file_exists($folder)) { // folder exists
 
-$people_json = file_get_contents($folder.'info.json');
-$decoded_json = json_decode($people_json, false);
-//echo $decoded_json->title;
+$info_json = file_get_contents($folder.'info.json');
+$decoded_json = json_decode($info_json, false);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +75,7 @@ $decoded_json = json_decode($people_json, false);
 		</script>
 
 		<script>
-			let rotate = false;
+			let rotate = true;
 			function togRota() {
   				rotate = !rotate;
 				console.log("ss")
@@ -224,6 +221,10 @@ $decoded_json = json_decode($people_json, false);
 					lon += 0.2;
 
 				}
+				
+				if ( isUserInteracting === true) {
+						rotate = false;
+				}	
 
 				lat = Math.max( - 85, Math.min( 85, lat ) );
 				phi = THREE.MathUtils.degToRad( 90 - lat );
