@@ -43,7 +43,7 @@ $decoded_json = json_decode($info_json, false);
 				}
 				echo "</select>";
 			?>
-			<button onclick="togRota()">Toggle Rotation</button><button onclick="openFullscreen();">Open In Fullscreen</button>
+			<button onclick="togRota()">Toggle Rotation</button> <button id="full">Open Fullscreen</button>
 			<br>
 			Drag to move around
 		</div>
@@ -78,20 +78,42 @@ $decoded_json = json_decode($info_json, false);
 				let thisPage = new URL(window.location.href);
 				thisPage.searchParams.set('a', d);
 				window.location.href = thisPage;
-			}
+			}	
 			
-			var elem = document.getElementById("bod");
-			/* When the openFullscreen() function is executed, open in fullscreen.
-			Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
-			function openFullscreen() {
-				if (elem.requestFullscreen) {
-					elem.requestFullscreen();
-				} else if (elem.webkitRequestFullscreen) { /* Safari */
-					elem.webkitRequestFullscreen();
-				} else if (elem.msRequestFullscreen) { /* IE11 */
-					elem.msRequestFullscreen();
+			let myDocument = document.documentElement;
+			let btn = document.getElementById("full");
+			btn.addEventListener("click", ()=>{
+				if(btn.textContent == "Open Fullscreen"){
+					if (myDocument.requestFullscreen) {
+						myDocument.requestFullscreen();
+					} 
+					else if (myDocument.msRequestFullscreen) {
+						myDocument.msRequestFullscreen();
+					} 
+					else if (myDocument.mozRequestFullScreen) {
+						myDocument.mozRequestFullScreen();
+					}
+					else if(myDocument.webkitRequestFullscreen) {
+						myDocument.webkitRequestFullscreen();
+					}
+					btn.textContent = "Exit Fullscreen";
 				}
-			}
+				else{
+					if(document.exitFullscreen) {
+						document.exitFullscreen();
+					}
+					else if(document.msexitFullscreen) {
+						document.msexitFullscreen();
+					}
+					else if(document.mozexitFullscreen) {
+						document.mozexitFullscreen();
+					}
+					else if(document.webkitexitFullscreen) {
+						document.webkitexitFullscreen();
+					}
+					btn.textContent = "Open Fullscreen";
+				}
+			});
 		</script>
 
 		<script type="module">
