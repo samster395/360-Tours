@@ -27,33 +27,46 @@ $decoded_json = json_decode($people_json, false);
 		<div id="info">
 			<h3><a href="<?php echo $decoded_json->estateAlink; ?>" target="_blank"><?php echo $decoded_json->estateA; ?></a></h3>
 			<h2><?php echo $decoded_json->title; ?></h2>
-			<span id="room">Room: </span> 
+			<span id="room">Area: </span> 
 			<?php
 				$fileList = glob($folder.'*.jpg');
+				$firstFile = pathinfo($fileList[0])['filename'];
+				echo '<select onchange="roomChange()" id="select_room">';
 				foreach($fileList as $filename){
 					if(is_file($filename)){
 						//echo $filename, '<br>'; 
 						$path_parts = pathinfo($filename);
 						//echo $path_parts['filename'], "\n";
-						$url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']. '&r='.$path_parts['filename'].'">'.$path_parts['filename'];
-						$my_new_string = strstr($url, '&r=', true);
+						$url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']. '&a='.$path_parts['filename'].'">'.$path_parts['filename'];
+						$my_new_string = strstr($url, '&a=', true);
 						//echo $my_new_string;
-						echo '<span>&#8226;</span> <a href="'.$my_new_string.'&r='.$path_parts['filename'].'">'.$path_parts['filename'].'</a> ';
+						//echo '<span>&#8226;</span> <a href="'.$my_new_string.'&r='.$path_parts['filename'].'">'.$path_parts['filename'].'</a> ';
+						if($_GET['a'] == $path_parts['filename']){
+						?>
+							<option value="<?php echo $path_parts['filename']; ?>" selected><?php echo $path_parts['filename']; ?></option>
+						<?php
+						} else {
+						?>
+							<option value="<?php echo $path_parts['filename']; ?>"><?php echo $path_parts['filename']; ?></option>
+						<?php
+						}
+						//echo '<span>&#8226;</span> <a href="'.$my_new_string.'&r='.$path_parts['filename'].'">'.$path_parts['filename'].'</a> ';
 					}   
 				}
-				echo "<br>";
+				echo "</select>";
+				//echo "<br>";
 			?>
 			<!--<a href="?r=lounge">Lounge</a> - <a href="?r=bed2">Bedroom 2</a> <br>-->
 			<button onclick="togRota()">Toggle Rotation</button>
 			<br>
-			Click and drag to move around
+			Drag to move around
 		</div>
 		
 		<div id="container"></div>
 
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
-		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+		<!--<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
 
 		<script type="importmap">
 			{
@@ -74,12 +87,20 @@ $decoded_json = json_decode($people_json, false);
 			const queryString = window.location.search;
 			//console.log(queryString);
 			const urlParams = new URLSearchParams(queryString);
-			let room = urlParams.get('r')
+			let room = urlParams.get('a')
 			//console.log(room);
 			if(room === null){
-				room = "Lounge"
+				room = "<?php echo $firstFile; ?>"
 			}
-			document.getElementById("room").innerHTML = "Room: " + room;
+			//document.getElementById("room").innerHTML = "Area: " + room;
+			function roomChange(){
+				d = document.getElementById("select_room").value;
+				let thisPage = new URL(window.location.href);
+				thisPage.searchParams.set('a', d);
+				console.log(thisPage);
+				window.location.href = thisPage;
+				//location.reload();
+			}
 		</script>
 
 		<script type="module">
@@ -223,14 +244,20 @@ $decoded_json = json_decode($people_json, false);
 </html>
 
 <?php
-} else {
-  echo 'Invalid Client ID or Property ID';
+} else { // Folder does not exist
+	InvalidData();
 }	
 
-
-} else {
-  // URL parameter does not exist
-  echo 'Invalid Client ID or Property ID';
+} else { // no URL parameters given
+	InvalidData();
 }
 
+function InvalidData(){
+?>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sam's Stills - 360 Tours</title>
+	<h1>Invalid Client ID or Property ID.</h1>
+	<h2>If you would like to contact me about making a 360 tour of your property, please <a href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
+<?php	
+}
 ?>
