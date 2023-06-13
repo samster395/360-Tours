@@ -8,3 +8,5 @@ Add property info in the info.json file.
 [Example Tour](https://samsstills.co.uk/tours/?cid=145&pid=1)
 
 Can be embedded in pages like so: [Property listing example](https://samsstills.co.uk/tours/listing.html)
+
+Made using [three.js](https://github.com/mrdoob/three.js/).
