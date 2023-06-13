@@ -61,7 +61,13 @@ $decoded_json = json_decode($info_json, false);
 			}
 		</script>
 		<script>
-			let rotate = true;
+			let rotate;
+			if ( window.location !== window.parent.location ) {
+				rotate = false; // The page is in an iframe - probably best to keep rotation off
+			} else { 
+				rotate = true; // The page is not in an iframe
+			}
+			
 			function togRota() {
   				rotate = !rotate;
 			}
