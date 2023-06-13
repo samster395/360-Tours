@@ -19,7 +19,7 @@ $decoded_json = json_decode($info_json, false);
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&amp;display=swap" rel="stylesheet">
 	</head>
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
-	<body>
+	<body id="bod">
 
 		<div id="info">
 			<h3><a href="<?php echo $decoded_json->estateAlink; ?>" target="_blank"><?php echo $decoded_json->estateA; ?></a></h3>
@@ -54,7 +54,7 @@ $decoded_json = json_decode($info_json, false);
 				//echo "<br>";
 			?>
 			<!--<a href="?r=lounge">Lounge</a> - <a href="?r=bed2">Bedroom 2</a> <br>-->
-			<button onclick="togRota()">Toggle Rotation</button>
+			<button onclick="togRota()">Toggle Rotation</button><button onclick="openFullscreen();">Open In Fullscreen</button>
 			<br>
 			Drag to move around
 		</div>
@@ -97,6 +97,19 @@ $decoded_json = json_decode($info_json, false);
 				console.log(thisPage);
 				window.location.href = thisPage;
 				//location.reload();
+			}
+			
+			var elem = document.getElementById("bod");
+			/* When the openFullscreen() function is executed, open in fullscreen.
+			Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+			function openFullscreen() {
+				if (elem.requestFullscreen) {
+					elem.requestFullscreen();
+				} else if (elem.webkitRequestFullscreen) { /* Safari */
+					elem.webkitRequestFullscreen();
+				} else if (elem.msRequestFullscreen) { /* IE11 */
+					elem.msRequestFullscreen();
+				}
 			}
 		</script>
 
