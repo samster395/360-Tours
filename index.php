@@ -1,7 +1,7 @@
 <?php
-if(isset($_GET['cid']) && isset($_GET['pid'])) { // URL parameters exists
+if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 
-$folder = "./360s/c".$_GET['cid']."/p".$_GET['pid']."/";
+$folder = "./360s/c".$_GET['c']."/p".$_GET['p']."/";
 
 if(file_exists($folder)) { // folder exists
 
@@ -282,12 +282,13 @@ $decoded_json = json_decode($info_json, false);
 
 function InvalidData(){
 ?>
-	<body style="background-color: #3d5464; color: white; text-align:center;">
+	<body style="background-color: #3d5464; color: white; text-align:center; font-family: 'Montserrat', sans-serif;">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sam's Stills - 360 Tours</title>
 	<h1>Invalid Client ID or Property ID.</h1>
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
-	<h2>Click <a href="https://samsstills.co.uk/tours/?cid=145&pid=1">here</a> for an example tour.</h2>
+	<h2>Below is an example tour.</h2>
+	<iframe width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1" title=""></iframe>
 	</body>
 <?php	
 }

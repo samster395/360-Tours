@@ -6,7 +6,7 @@ As can be seen from the folder structure, you have client folders and inside tha
 
 Add property info in the info.json file.
 
-[Example Tour](https://samsstills.co.uk/tours/?cid=145&pid=1)
+[Example Tour](https://samsstills.co.uk/tours/?c=1&p=1)
 
 Can be embedded in pages like so: [Property listing example](https://samsstills.co.uk/tours/listing.html)
 
