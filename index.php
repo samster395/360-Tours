@@ -273,20 +273,20 @@ $decoded_json = json_decode($info_json, false);
 
 <?php
 } else { // Folder does not exist
-	InvalidData();
+	InvalidData(); // Display Error page
 }	
 
 } else { // no URL parameters given
-	InvalidData();
+	InvalidData(); // Display Error page
 }
 
-function InvalidData(){
+function InvalidData(){ // Error page
 ?>
 	<body style="background-color: #3d5464; color: white; text-align:center; font-family: 'Montserrat', sans-serif;">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sam's Stills - 360 Tours</title>
 	<h1>Invalid Client ID or Property ID.</h1>
-	<h2>If you would like to contact me about making a 360 tour of your property, please <a href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
+	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
 	<h2>Below is an example tour.</h2>
 	<iframe width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1" title=""></iframe>
 	</body>
