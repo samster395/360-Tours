@@ -1,17 +1,22 @@
 <?php
 if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 
-$folder = "./360s/c".$_GET['c']."/p".$_GET['p']."/";
+$Pfolder = "./360s/c".$_GET['c']."/p".$_GET['p']."/";
 
-if(file_exists($folder)) { // folder exists
+$Cfolder = "./360s/c".$_GET['c']."/";
 
-$info_json = file_get_contents($folder.'info.json'); // Read the info from the info.json file
-$decoded_json = json_decode($info_json, false);
+if(file_exists($Pfolder)) { // Pfolder exists
+
+$p_info_json = file_get_contents($Pfolder.'info.json'); // Read the info from the info.json file
+$p_decoded_json = json_decode($p_info_json, false);
+
+$c_info_json = file_get_contents($Cfolder.'client_info.json'); // Read the info from the info.json file
+$c_decoded_json = json_decode($c_info_json, false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>360 Tour - <?php echo $decoded_json->title; ?></title>
+		<title>360 Tour - <?php echo $p_decoded_json->title; ?></title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<link type="text/css" rel="stylesheet" href="./includes/main.css">
@@ -20,11 +25,11 @@ $decoded_json = json_decode($info_json, false);
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<body id="bod">
 		<div id="info">
-			<h3><a href="<?php echo $decoded_json->estateAlink; ?>" target="_blank"><?php echo $decoded_json->estateA; ?></a></h3> <!-- Display the data from the info.json file -->
-			<h2><?php echo $decoded_json->title; ?></h2> 
+			<h3><a href="<?php echo $c_decoded_json->estateAlink; ?>" target="_blank"><?php echo $c_decoded_json->estateA; ?></a></h3> <!-- Display the data from the info.json file -->
+			<h2><?php echo $p_decoded_json->title; ?></h2> 
 			<span id="area">Area: </span> 
 			<?php
-				$fileList = glob($folder.'*.jpg'); // Search the folder for .jpg files
+				$fileList = glob($Pfolder.'*.jpg'); // Search the Pfolder for .jpg files
 				$firstFile = pathinfo($fileList[0])['filename'];
 				echo '<select onchange="areaChange()" id="select_area">';
 				foreach($fileList as $filename){ // Add each photo as an option in a drop down list
@@ -156,7 +161,7 @@ $decoded_json = json_decode($info_json, false);
 				// invert the geometry on the x-axis so that all of the faces point inward
 				geometry.scale( - 1, 1, 1 );
 
-				const texture = new THREE.TextureLoader().load( '<?php echo $folder ?>'+ area + '.jpg' );
+				const texture = new THREE.TextureLoader().load( '<?php echo $Pfolder ?>'+ area + '.jpg' );
 				texture.colorSpace = THREE.SRGBColorSpace;
 				const material = new THREE.MeshBasicMaterial( { map: texture } );
 
@@ -272,7 +277,7 @@ $decoded_json = json_decode($info_json, false);
 </html>
 
 <?php
-} else { // Folder does not exist
+} else { // Pfolder does not exist
 	InvalidData(); // Display Error page
 }	
 
@@ -292,7 +297,7 @@ function InvalidData(){ // Error page
 	<body style="background-color: #3d5464; color: white; text-align:center; font-family: 'Montserrat', sans-serif;">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sam's Stills - 360 Tours</title>
-	<h1>Invalid Client ID or Property ID.</h1>
+	<h2>Invalid Client ID or Property ID.</h2>
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
 	<h2>Below is an example tour.</h2>
 	<iframe width="70%" height="80%" id="ifr" src="https://samsstills.co.uk/tours/?c=1&p=1" title=""></iframe>
