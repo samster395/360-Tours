@@ -41,7 +41,7 @@ button {
 	padding-top: 5px;
 	box-sizing: border-box;
 	/*text-align: center;*/
-	-moz-user-select: none;
+	/*-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;

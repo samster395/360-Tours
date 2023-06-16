@@ -31,7 +31,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 					<?php
 						$fileList = glob($Pfolder.'*.jpg'); // Search the Pfolder for .jpg files
 						$firstFile = pathinfo($fileList[0])['filename'];
-						echo '<select onchange="areaChange()" id="select_area">';
+						echo '<select id="select_area">';
 						foreach($fileList as $filename){ // Add each photo as an option in a drop down list
 							if(is_file($filename)){
 								$path_parts = pathinfo($filename);
@@ -83,13 +83,6 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 					if(area === null){
 						area = "<?php echo $firstFile; ?>"
 					}
-					
-					function areaChange(){
-						d = document.getElementById("select_area").value;
-						let thisPage = new URL(window.location.href);
-						thisPage.searchParams.set('a', d);
-						window.location.href = thisPage;
-					}	
 					
 					let myDocument = document.documentElement;
 					let btn = document.getElementById("full");
@@ -164,6 +157,19 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						const texture = new THREE.TextureLoader().load( '<?php echo $Pfolder ?>'+ area + '.jpg' );
 						texture.colorSpace = THREE.SRGBColorSpace;
 						const material = new THREE.MeshBasicMaterial( { map: texture } );
+						
+						let selector = document.getElementById("select_area"); 
+
+						selector.addEventListener("change", () => {
+							const texture2 = new THREE.TextureLoader().load( '<?php echo $Pfolder ?>'+ selector.value + '.jpg' );
+							texture2.colorSpace = THREE.SRGBColorSpace;
+							material.map = texture2;
+							material.needsUpdate=true;
+							
+							let thisPage = new URL(window.location.href);
+							thisPage.searchParams.set('a', selector.value);
+							window.history.pushState(null, '', thisPage.toString());
+						});
 		
 						const mesh = new THREE.Mesh( geometry, material );
 		
