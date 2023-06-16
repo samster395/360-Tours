@@ -6,6 +6,8 @@ As can be seen from the folder structure, you have client folders and inside tha
 
 I take the photos with a Insta 360 One X but you could use photos from a smartphone.
 
+Add client info in the client_info.json file.
+
 Add property info in the info.json file.
 
 [Example Tour](https://samsstills.co.uk/tours/?c=1&p=1)
