@@ -1,17 +1,17 @@
 <?php
 if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 
-$Pfolder = "./360s/c".$_GET['c']."/p".$_GET['p']."/";
+$Cfolder = "./360s/c".$_GET['c']."/"; // Client Folder
 
-$Cfolder = "./360s/c".$_GET['c']."/";
+$Pfolder = "./360s/c".$_GET['c']."/p".$_GET['p']."/"; // Propery Folder 
 
-if(file_exists($Pfolder)) { // Pfolder exists
+if(file_exists($Cfolder) && file_exists($Pfolder)) { // Folders exist
+
+$c_info_json = file_get_contents($Cfolder.'client_info.json'); // Read the info from the client_info.json file
+$c_decoded_json = json_decode($c_info_json, false);
 
 $p_info_json = file_get_contents($Pfolder.'info.json'); // Read the info from the info.json file
 $p_decoded_json = json_decode($p_info_json, false);
-
-$c_info_json = file_get_contents($Cfolder.'client_info.json'); // Read the info from the info.json file
-$c_decoded_json = json_decode($c_info_json, false);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,7 @@ $c_decoded_json = json_decode($c_info_json, false);
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<body id="bod">
 		<div id="info">
-			<h3><a href="<?php echo $c_decoded_json->estateAlink; ?>" target="_blank"><?php echo $c_decoded_json->estateA; ?></a></h3> <!-- Display the data from the info.json file -->
+			<h3><a href="<?php echo $c_decoded_json->estateAlink; ?>" target="_blank"><?php echo $c_decoded_json->estateA; ?></a></h3> <!-- Display the data from the client_info.json file -->
 			<h2><?php echo $p_decoded_json->title; ?></h2> 
 			<span id="area">Area: </span> 
 			<?php
