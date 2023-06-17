@@ -48,7 +48,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						}
 						echo "</select>";
 					?>
-					<button onclick="togRota()">Toggle Rotation</button> <button onclick="toggleFullScreen()">Toggle Fullscreen</button>
+					<button onclick="togRota()">Toggle Rotation</button> <button id="fullBtn" onclick="toggleFullScreen()">Toggle Fullscreen</button>
 					<br>
 					<h3>Drag to move around</h3>
 				</div>
@@ -86,6 +86,11 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						area = "<?php echo $firstFile; ?>"
 					}
 					
+					if(navigator.userAgent.includes("iPhone")){ // Fullscreen not supported on iPhone https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen#browser_compatibility
+						console.log("Fullscreen not supported on iOS");
+						document.getElementById("fullBtn").style.display = "none";
+					}
+					
 					function toggleFullScreen() {
 						if (!document.fullscreenElement &&    // alternative standard method
 							!document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
@@ -105,7 +110,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 								document.webkitCancelFullScreen();
 							}
 						}
-     }
+					}
 				</script>
 		
 				<script type="module">
