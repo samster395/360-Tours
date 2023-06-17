@@ -48,7 +48,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						}
 						echo "</select>";
 					?>
-					<button onclick="togRota()">Toggle Rotation</button> <button id="full">Open Fullscreen</button>
+					<button onclick="togRota()">Toggle Rotation</button> <button onclick="toggleFullScreen()">Toggle Fullscreen</button>
 					<br>
 					<h3>Drag to move around</h3>
 				</div>
@@ -56,7 +56,9 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 				<div id="container"></div>
 				<!-- Import maps polyfill -->
 				<!-- Remove this when import maps will be widely supported -->
-				<!--<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
+				<!-- This is required for IOS to work currently(17/06/2023) -->
+				<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+				
 				<script type="importmap">
 					{
 						"imports": {
@@ -84,45 +86,26 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						area = "<?php echo $firstFile; ?>"
 					}
 					
-					let myDocument = document.documentElement;
-					let btn = document.getElementById("full");
-					
-					//if( window.innerHeight == screen.height) {
-					//	btn.textContent = "Exit Fullscreen"
-					//}
-					
-					btn.addEventListener("click", ()=>{
-						if(btn.textContent == "Open Fullscreen"){
-							if (myDocument.requestFullscreen) {
-								myDocument.requestFullscreen();
-							} 
-							else if (myDocument.msRequestFullscreen) {
-								myDocument.msRequestFullscreen();
-							} 
-							else if (myDocument.mozRequestFullScreen) {
-								myDocument.mozRequestFullScreen();
+					function toggleFullScreen() {
+						if (!document.fullscreenElement &&    // alternative standard method
+							!document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+							if (document.documentElement.requestFullscreen) {
+							document.documentElement.requestFullscreen();
+							} else if (document.documentElement.mozRequestFullScreen) {
+							document.documentElement.mozRequestFullScreen();
+							} else if (document.documentElement.webkitRequestFullscreen) {
+							document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 							}
-							else if(myDocument.webkitRequestFullscreen) {
-								myDocument.webkitRequestFullscreen();
+						} else {
+							if (document.cancelFullScreen) {
+								document.cancelFullScreen();
+							} else if (document.mozCancelFullScreen) {
+								document.mozCancelFullScreen();
+							} else if (document.webkitCancelFullScreen) {
+								document.webkitCancelFullScreen();
 							}
-							btn.textContent = "Exit Fullscreen";
 						}
-						else{
-							if(document.exitFullscreen) {
-								document.exitFullscreen();
-							}
-							else if(document.msexitFullscreen) {
-								document.msexitFullscreen();
-							}
-							else if(document.mozexitFullscreen) {
-								document.mozexitFullscreen();
-							}
-							else if(document.webkitexitFullscreen) {
-								document.webkitexitFullscreen();
-							}
-							btn.textContent = "Open Fullscreen";
-						}
-					});
+     }
 				</script>
 		
 				<script type="module">
@@ -323,6 +306,6 @@ function ErrorPageFinish(){ // Error page
 ?>	
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
 	<h2>Below is an example tour and <a href="https://samsstills.co.uk/tours/listing.html" target="_blank">here</a> is a property listing example.</h2>
-	<iframe width="70%" height="80%" id="ifr" src="https://samsstills.co.uk/tours/?c=1&p=1" title=""></iframe>
+	<iframe width="70%" height="80%" id="ifr" src="https://samsstills.co.uk/tours/?c=1&p=1" title="" allow="fullscreen"></iframe>
 	</body>
 <?php } ?>	
