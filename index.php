@@ -284,30 +284,45 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 
 <?php
 	} else { // Pfolder does not exist
-	InvalidData(); // Display Error page
+	ErrorPageStart();
+	echo "<h1>Invalid Client or Property ID.</h1>";
+	ErrorPageFinish();	
 	}	
 
 } else { // no URL parameters given
-	InvalidData(); // Display Error page
+	ErrorPageStart();
+	echo "<h1>Sam's Stills - 360 Tours</h1>";
+	ErrorPageFinish();
+
 }
 
-function InvalidData(){ // Error page
+function ErrorPageStart(){ // Error page
 ?>	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sam's Stills - 360 Tours</title>
 	<style>
+	body {
+		background-color: #3d5464;
+		color: white;
+		text-align:center;
+		font-family: 'Montserrat', sans-serif;
+	}
+	a {
+		color:yellow
+	}
 	@media only screen and (max-width: 800px) {
 		#ifr{
 			width: 100%;
 		}
 	}
 	</style>
-	<body style="background-color: #3d5464; color: white; text-align:center; font-family: 'Montserrat', sans-serif;">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Sam's Stills - 360 Tours</title>
-	<h2>Invalid Client ID or Property ID.</h2>
+	<body>
+<?php } 
+
+function ErrorPageFinish(){ // Error page
+?>	
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
-	<h2>Below is an example tour.</h2>
+	<h2>Below is an example tour and <a href="https://samsstills.co.uk/tours/listing.html" target="_blank">here</a> is a property listing example.</h2>
 	<iframe width="70%" height="80%" id="ifr" src="https://samsstills.co.uk/tours/?c=1&p=1" title=""></iframe>
 	</body>
-<?php	
-}
-?>
+<?php } ?>	
