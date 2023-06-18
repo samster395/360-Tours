@@ -68,8 +68,13 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 					}
 				</script>
 				<script>
+					const queryString = window.location.search;
+					const urlParams = new URLSearchParams(queryString);
+					
+					let rot = urlParams.get('r'); // Add &r to URL to rotate on start
+					
 					let rotate;
-					if ( window.location !== window.parent.location ) {
+					if ( window.location !== window.parent.location && rot === null) { 
 						rotate = false; // The page is in an iframe - probably best to keep rotation off
 					} else { 
 						rotate = true; // The page is not in an iframe
@@ -79,9 +84,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						rotate = !rotate;
 					}
 					
-					const queryString = window.location.search;
-					const urlParams = new URLSearchParams(queryString);
-					let area = urlParams.get('a')
+					let area = urlParams.get('a');
 					if(area === null){
 						area = "<?php echo $firstFile; ?>"
 					}
@@ -364,7 +367,7 @@ function ErrorPageFinish(){ // Error page
 ?>	
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
 	<h2>Below is an example tour and <a href="https://samsstills.co.uk/tours/listing.html" target="_blank">here</a> is a property listing example.</h2>
-	<iframe style="border: 0;" id="ifr" width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1" title="" allow="fullscreen"></iframe>
+	<iframe style="border: 0;" id="ifr" width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1&r" title="" allow="fullscreen"></iframe>
 	</body>
 	<script type="text/javascript">	
 	function navResp() {
