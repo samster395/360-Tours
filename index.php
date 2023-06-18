@@ -48,7 +48,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 						}
 						echo "</select>";
 					?>
-					<button onclick="togRota()">Toggle Rotation</button> <button id="fullBtn" onclick="toggleFullScreen()">Toggle Fullscreen</button>
+					<button onclick="togRota()">Rotation On/Off</button> <button id="fullBtn" onclick="toggleFullScreen()">Open Fullscreen</button>
 					<br>
 					<h3>Drag to move around</h3>
 				</div>
@@ -101,6 +101,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 							} else if (document.documentElement.webkitRequestFullscreen) {
 							document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 							}
+							document.getElementById("fullBtn").innerText = "Exit Fullscreen";
 						} else {
 							if (document.cancelFullScreen) {
 								document.cancelFullScreen();
@@ -110,6 +111,19 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 								document.webkitCancelFullScreen();
 							}
 						}
+					}
+					
+					if (document.addEventListener){
+						document.addEventListener('fullscreenchange', exitHandler, false);
+						document.addEventListener('mozfullscreenchange', exitHandler, false);
+						document.addEventListener('MSFullscreenChange', exitHandler, false);
+						document.addEventListener('webkitfullscreenchange', exitHandler, false);
+					}
+					
+					function exitHandler(){
+					if (!document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement){
+						document.getElementById("fullBtn").innerText = "Open Fullscreen";
+					}
 					}
 				</script>
 		
@@ -272,20 +286,7 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 
 <?php
 	} else { // Pfolder does not exist
-	ErrorPageStart();
-	echo "<h1>Invalid Client or Property ID.</h1>";
-	ErrorPageFinish();	
-	}	
-
-} else { // no URL parameters given
-	ErrorPageStart();
-	echo "<h1>Sam's Stills - 360 Tours</h1>";
-	ErrorPageFinish();
-
-}
-
-function ErrorPageStart(){ // Error page
-?>	
+	?>	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Sam's Stills - 360 Tours</title>
 	<style>
@@ -305,12 +306,74 @@ function ErrorPageStart(){ // Error page
 	}
 	</style>
 	<body>
+<?php
+	ErrorPageStart();
+	echo "<h1>Invalid Client or Property ID.</h1>";
+	ErrorPageFinish();	
+	}	
+
+} else { // no URL parameters given
+	ErrorPageStart();
+	echo "<h1>360 Tours</h1>";
+	ErrorPageFinish();
+
+}
+
+function ErrorPageStart(){ // Error page
+?>	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sam's Stills - 360 Tours</title>
+	<style>
+	body {
+		background-color: #3d5464;
+		color: white;
+		text-align:center;
+		font-family: 'Montserrat', sans-serif;
+		margin: 0;
+	}
+	a {
+		color:yellow
+	}
+	@media only screen and (max-width: 800px) {
+		#ifr{
+			width: 100%;
+		}
+	}
+	</style>
+	<!--<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.css'>-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../includes/css/style.css">
+	<body>
+	<div class="topnav" id="myTopnav">
+		<a href="https://samsstills.co.uk/" class="active">Sam's Stills</a>
+		<a href="https://samsstills.co.uk/?about" >About me / Services</a>
+		<a href="mailto:samsstills@outlook.com">Get in touch</a>
+		<!--<a href="https://samsstills.co.uk/?testimonials" >Nice words</a>-->
+		<a href="https://samsstills.pixieset.com/" target="_blank">Shop Prints</a>
+		<a href="https://www.redbubble.com/people/SamsPhotographs/explore?asc=u&page=1&sortOrder=recent" target="_blank">Shop Clothes</a>
+		<a href="https://www.instagram.com/sams.stills/" target="_blank">Instagram</a>
+		<a href="https://www.facebook.com/sams.stills" target="_blank">Facebook</a>
+		<!--<a href="https://www.tiktok.com/@samsstills" target="_blank">TikTok</a>-->
+		<a href="javascript:void(0);" class="icon" onclick="navResp()">
+		<i class="fa fa-bars"></i>
+		</a>
+	</div>
 <?php } 
 
 function ErrorPageFinish(){ // Error page
 ?>	
 	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
 	<h2>Below is an example tour and <a href="https://samsstills.co.uk/tours/listing.html" target="_blank">here</a> is a property listing example.</h2>
-	<iframe width="70%" height="80%" id="ifr" src="https://samsstills.co.uk/tours/?c=1&p=1" title="" allow="fullscreen"></iframe>
+	<iframe style="border: 0;" id="ifr" width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1" title="" allow="fullscreen"></iframe>
 	</body>
+	<script type="text/javascript">	
+	function navResp() {
+	var x = document.getElementById("myTopnav");
+	if (x.className === "topnav") {
+		x.className += " responsive";
+	} else {
+		x.className = "topnav";
+	}
+	}
+	</script>
 <?php } ?>	
