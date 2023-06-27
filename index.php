@@ -6,6 +6,13 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 	$Pfolder = "./360s/c".$_GET['c']."/p".$_GET['p']."/"; // Propery Folder 
 
 	if(file_exists($Cfolder) && file_exists($Pfolder)) { // Folders exist
+	
+		$fileList = glob($Pfolder.'*.jpg'); // Search the Pfolder for .jpg files
+		$firstFile = pathinfo($fileList[0])['filename'];
+		
+		if (isset($_GET['a']) && !in_array($Pfolder.$_GET['a'].'.jpg', $fileList, false)) {
+		echo "<script type='text/javascript'>alert('Given area does not exist.');</script>";
+		}
 
 		$c_info_json = file_get_contents($Cfolder.'client_info.json'); // Read the info from the client_info.json file
 		$c_decoded_json = json_decode($c_info_json, false);
@@ -29,8 +36,6 @@ if(isset($_GET['c']) && isset($_GET['p'])) { // URL parameters exists
 					<h2><?php echo $p_decoded_json->title; ?></h2> 
 					<span id="area">Area: </span> 
 					<?php
-						$fileList = glob($Pfolder.'*.jpg'); // Search the Pfolder for .jpg files
-						$firstFile = pathinfo($fileList[0])['filename'];
 						echo '<select id="select_area">';
 						foreach($fileList as $filename){ // Add each photo as an option in a drop down list
 							if(is_file($filename)){
@@ -350,10 +355,10 @@ function ErrorPageStart(){ // Error page
 	<div class="topnav" id="myTopnav">
 		<a href="https://samsstills.co.uk/" class="active">Sam's Stills</a>
 		<a href="https://samsstills.co.uk/?about" >About me / Services</a>
-		<a href="mailto:samsstills@outlook.com">Get in touch</a>
+		<a href="mailto:info@samsstills.co.uk">Get in touch</a>
 		<!--<a href="https://samsstills.co.uk/?testimonials" >Nice words</a>-->
-		<a href="https://samsstills.pixieset.com/" target="_blank">Shop Prints</a>
-		<a href="https://www.redbubble.com/people/SamsPhotographs/explore?asc=u&page=1&sortOrder=recent" target="_blank">Shop Clothes</a>
+		<!--<a href="https://samsstills.pixieset.com/" target="_blank">Shop Prints</a>
+		<a href="https://www.redbubble.com/people/SamsPhotographs/explore?asc=u&page=1&sortOrder=recent" target="_blank">Shop Clothes</a>-->
 		<a href="https://www.instagram.com/sams.stills/" target="_blank">Instagram</a>
 		<a href="https://www.facebook.com/sams.stills" target="_blank">Facebook</a>
 		<!--<a href="https://www.tiktok.com/@samsstills" target="_blank">TikTok</a>-->
@@ -365,9 +370,9 @@ function ErrorPageStart(){ // Error page
 
 function ErrorPageFinish(){ // Error page
 ?>	
-	<h2>If you would like to contact me about making a 360 tour of your property, please <a style="color:yellow" href="mailto:samsstills@outlook.com">get in touch</a>.</h2>
+	<h2>If you would like to contact me about making a 360 tour of your property (or for any other 360 tours), please <a style="color:yellow" href="mailto:info@samsstills.co.uk">get in touch</a>.</h2>
 	<h2>Below is an example tour and <a href="https://samsstills.co.uk/tours/listing.html" target="_blank">here</a> is a property listing example.</h2>
-	<iframe style="border: 0;" id="ifr" width="70%" height="80%" src="https://samsstills.co.uk/tours/?c=1&p=1&r" title="" allow="fullscreen"></iframe>
+	<iframe style="border: 0;" id="ifr" width="60%" height="70%" src="https://samsstills.co.uk/tours/?c=1&p=1&r" title="" allow="fullscreen"></iframe>
 	</body>
 	<script type="text/javascript">	
 	function navResp() {
